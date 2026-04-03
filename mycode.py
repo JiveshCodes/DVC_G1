@@ -1,31 +1,32 @@
 import pandas as pd
 import os
 
-# Create a sample DataFrame with column names
-data = {
-    'Name': ['Alice', 'Bob', 'Charlie'],
-    'Age': [25, 30, 35],
-    'City': ['New York', 'Los Angeles', 'Chicago']
-}
-
-df = pd.DataFrame(data)
-
-# # Adding new row to df for V2
-# new_row_loc = {'Name': 'V2', 'Age': 20, 'City': 'City1'}
-# df.loc[len(df.index)] = new_row_loc
-
-# # # Adding new row to df for V3
-# new_row_loc2 = {'Name': 'chumak', 'Age': 30, 'City': 'City1'}
-# df.loc[len(df.index)] = new_row_loc2
-
-# Ensure the "data" directory exists at the root level
+# Ensure the "data" directory exists
 data_dir = "data"
 os.makedirs(data_dir, exist_ok=True)
 
-# Define the file path
 file_path = os.path.join(data_dir, "sample_data.csv")
 
-# Save the DataFrame to a CSV file, including column names
-df.to_csv(file_path, index=False)
+# Check if file exists
+if not os.path.exists(file_path):
+    # Create initial dataset (V1)
+    data = {
+        'Name': ['Alice', 'Bob', 'Charlie'],
+        'Age': [25, 30, 35],
+        'City': ['New York', 'Los Angeles', 'Chicago']
+    }
+    df = pd.DataFrame(data)
+    df.to_csv(file_path, index=False)
+    print("V1 dataset created")
+
+else:
+    # Append new row (V2)
+    df = pd.read_csv(file_path)
+
+    new_row = {'Name': 'David', 'Age': 28, 'City': 'Houston'}
+    df.loc[len(df.index)] = new_row
+
+    df.to_csv(file_path, index=False)
+    print("V2 row added")
 
 print(f"CSV file saved to {file_path}")
